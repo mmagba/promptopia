@@ -26,13 +26,16 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt", { next: { revalidate: 10 } });
+    const response = await fetch("/api/prompt", { cache: 'no-store' });
     const data = await response.json();
     setAllPosts(data);
   };
 
+  console.log(allPosts);
+
   useEffect(() => {
     fetchPosts();
+    console.log(allPosts);
   }, []);
 
   const filterPrompts = (searchtext) => {
