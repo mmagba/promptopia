@@ -20,6 +20,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+  const [allPostsOriginal, setAllPostsOriginal] = useState([]);
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -28,15 +29,27 @@ const Feed = () => {
   const fetchPosts = async () => {
     const response = await fetch("/api/prompt", { cache: 'no-store' });
     const data = await response.json();
-    setAllPosts(data);
+    setAllPostsOriginal(data);
   };
 
-  console.log(allPosts);
+  console.log('outside useEffects: allPosts', allPosts);
+  console.log('outside useEffects: allPostsOriginal', allPostsOriginal);
 
   useEffect(() => {
+
+    console.log('entered first useEffect');
     fetchPosts();
-    console.log(allPosts);
+    console.log('inside first useEffect', allPosts);
   }, []);
+
+  useEffect(() => {
+
+    console.log('entered second useEffect');
+    setAllPosts(allPostsOriginal);
+    console.log('inside second useEffect: allPosts', allPosts);
+    console.log('inside second useEffect: allPostsOriginal', allPostsOriginal);
+  }, [allPostsOriginal]);
+
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
