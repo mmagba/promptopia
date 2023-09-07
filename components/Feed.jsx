@@ -27,28 +27,21 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    console.log('inside fetchPosts');
     const response = await fetch("/api/prompt", { cache: 'no-store' });
     const data = await response.json();
     setAllPostsOriginal(data);
   };
 
-  console.log('outside useEffects: allPosts', allPosts);
-  console.log('outside useEffects: allPostsOriginal', allPostsOriginal);
+
 
   useEffect(() => {
 
-    console.log('entered first useEffect');
     fetchPosts();
-    console.log('inside first useEffect', allPosts);
   }, []);
 
   useEffect(() => {
 
-    console.log('entered second useEffect');
     setAllPosts(allPostsOriginal);
-    console.log('inside second useEffect: allPosts', allPosts);
-    console.log('inside second useEffect: allPostsOriginal', allPostsOriginal);
   }, [allPostsOriginal]);
 
 
